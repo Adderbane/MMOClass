@@ -126,14 +126,21 @@ public class SyncLocation : NetworkBehaviour {
     //Move to the new position evenly
     void LerpPosition()
     {
-        transform.position = Vector3.Lerp(transform.position, syncPos, Time.deltaTime * lerpRate);
+        if (!isLocalPlayer)
+        {
+            transform.position = Vector3.Lerp(transform.position, syncPos, Time.deltaTime * lerpRate);
+        }
+        
     }
 
     //Rotate to new rotation evenly
     void LerpRotations()
     {
-        LerpPlayerRotation(syncPlayerRotation);
-        LerpCamRot(syncCamRotation);
+        if (!isLocalPlayer)
+        {
+            LerpPlayerRotation(syncPlayerRotation);
+            LerpCamRot(syncCamRotation);
+        }
     }
 
     void LerpPlayerRotation(float rotAngle)
