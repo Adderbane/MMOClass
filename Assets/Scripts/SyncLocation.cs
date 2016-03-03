@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 
+[NetworkSettings (channel = 1)]
 public class SyncLocation : NetworkBehaviour {
 
     [SyncVar(hook = "SyncPositionValues")]
@@ -26,11 +27,11 @@ public class SyncLocation : NetworkBehaviour {
     private float rotationThreshold = 0.2f;
 
     [SerializeField]
-    private float lerpRate = 70;
+    private float lerpRate = 10;
 
     // Use this for initialization
     void Start () {
-	
+	    
 	}
 	
 	// Update is called once per frame
