@@ -21,13 +21,13 @@ public class SyncLocation : NetworkBehaviour {
 
 
     private Vector3 lastPosition;
-    private float positionThreshold = 0.01f;
+    private float positionThreshold = 0.001f;
     private float lastPlayerRot;
     private float lastCamRot;
     private float rotationThreshold = 0.2f;
 
     [SerializeField]
-    private float lerpRate = 10;
+    private float lerpRate = 6;
 
     // Use this for initialization
     void Start () {
