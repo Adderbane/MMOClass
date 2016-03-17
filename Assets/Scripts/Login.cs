@@ -8,7 +8,6 @@ public class Login : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        //Debug.Log("Start!");
     }
 	
 	// Update is called once per frame
@@ -16,22 +15,18 @@ public class Login : MonoBehaviour {
 
     }
 
-    
-   /* void OnGUI()
-    {
-        GameObject.Find("Join Room").GetComponent<Canvas>().onClick.AddListener(() => { 
-            Debug.Log("Joining Room!"); });
-        GameObject.Find("Create Room").GetComponent<Button>().onClick.AddListener(() => { Debug.Log("Creating Room!"); });
-    }*/
-
-    public void JoinRoom()
-    {
-        Debug.Log("Joining Room!");
-        print("Test");
+    public void JoinRoom(){
+        // Routes to the specified scene
+        Application.LoadLevel(1); // JoinRoom Scene
     }
 
-    public void CreateRoom()
-    {
-        Debug.Log("Creating Room!");
+    public void CreateRoom(){
+        // Routes to the specified scene
+        Application.LoadLevel(2); // CreateRoom Scene
+    }
+
+    public void StartRoom(){
+       
+
     }
 }
