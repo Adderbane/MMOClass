@@ -21,6 +21,7 @@ public class SyncLocation : NetworkBehaviour {
 
 
     private Vector3 lastPosition;
+    private Vector3 guessVelocity;
     private float positionThreshold = 0.001f;
     private float lastPlayerRot;
     private float lastCamRot;
@@ -69,13 +70,8 @@ public class SyncLocation : NetworkBehaviour {
         // This is where we (the client) send out our position.
         if (isLocalPlayer)
         {
-            if (Vector3.Distance(lastPosition, transform.position) > positionThreshold)
-            {
-                // Send a command to the server to update our position, and 
-                // it will update a SyncVar, which then automagically updates on everyone's game instance
-                CmdSendPositionToServer(transform.position);
-                lastPosition = transform.position;
-            }
+            CmdSendPositionToServer(transform.position);
+            lastPosition = transform.position;
         }
     }
 
@@ -111,6 +107,7 @@ public class SyncLocation : NetworkBehaviour {
     [Client]
     void SyncPositionValues(Vector3 latestPos)
     {
+        guessVelocity = latestPos - syncPos;
         syncPos = latestPos;
     }
     [Client]
@@ -129,7 +126,14 @@ public class SyncLocation : NetworkBehaviour {
     {
         if (!isLocalPlayer)
         {
-            transform.position = Vector3.Lerp(transform.position, syncPos, Time.deltaTime * lerpRate);
+            if (transform.position != syncPos)
+            {
+                transform.position = Vector3.Lerp(transform.position, syncPos, Time.deltaTime * lerpRate);
+            }
+            else
+            {
+                syncPos = transform.position + guessVelocity;
+            }
         }
         
     }
