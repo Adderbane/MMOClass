@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 [NetworkSettings (channel = 1)]
 public class SyncLocation : NetworkBehaviour {
@@ -19,8 +20,7 @@ public class SyncLocation : NetworkBehaviour {
     [SerializeField]
     private Transform camTransform;
 
-
-    private Vector3 lastPosition;
+    private Vector3 guessPos;
     private Vector3 guessVelocity;
     private float positionThreshold = 0.001f;
     private float lastPlayerRot;
@@ -29,6 +29,8 @@ public class SyncLocation : NetworkBehaviour {
 
     [SerializeField]
     private float lerpRate = 6;
+
+    private float timeStep;
 
     // Use this for initialization
     void Start () {
@@ -39,6 +41,7 @@ public class SyncLocation : NetworkBehaviour {
 	void Update () {
         LerpPosition();
         LerpRotations();
+        timeStep += Time.deltaTime;
     }
 
     //Runs at a fixed interval
@@ -71,7 +74,6 @@ public class SyncLocation : NetworkBehaviour {
         if (isLocalPlayer)
         {
             CmdSendPositionToServer(transform.position);
-            lastPosition = transform.position;
         }
     }
 
@@ -107,8 +109,13 @@ public class SyncLocation : NetworkBehaviour {
     [Client]
     void SyncPositionValues(Vector3 latestPos)
     {
-        guessVelocity = latestPos - syncPos;
+        guessVelocity = (latestPos - syncPos) * Time.fixedDeltaTime;
+        if (latestPos == syncPos){
+            guessVelocity = Vector3.zero;
+            guessPos = latestPos;
+        }
         syncPos = latestPos;
+        timeStep = 0;
     }
     [Client]
     void OnPlayerRotSynced(float latestPlayerRot)
@@ -126,13 +133,13 @@ public class SyncLocation : NetworkBehaviour {
     {
         if (!isLocalPlayer)
         {
-            if (transform.position != syncPos)
+            if (transform.position != guessPos)
             {
-                transform.position = Vector3.Lerp(transform.position, syncPos, Time.deltaTime * lerpRate);
+                transform.position = Vector3.Lerp(transform.position, guessPos, timeStep / Time.fixedDeltaTime);
             }
             else
             {
-                syncPos = transform.position + guessVelocity;
+                guessPos = transform.position + guessVelocity;
             }
         }
         
