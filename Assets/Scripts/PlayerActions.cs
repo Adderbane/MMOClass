@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerActions : MonoBehaviour {
 
@@ -8,6 +9,8 @@ public class PlayerActions : MonoBehaviour {
     private GameObject[] bullets;
     private int nextBullet;
     private float bulletSpeed;
+
+    private GameObject quitGame;
 
 	// Use this for initialization
 	void Start () {
@@ -38,5 +41,11 @@ public class PlayerActions : MonoBehaviour {
             Debug.Log("It's shooting");
 
         }
+
+        // If the escape button is pressed
+       /* if (Input.GetKeyDown(KeyCode.Escape)){
+            // Create a ExitGameUI Prefab. Then Exit the game
+            quitGame = (GameObject)Instantiate(Resources.Load("ExitGameUI"));
+        }*/
 	}
 }
