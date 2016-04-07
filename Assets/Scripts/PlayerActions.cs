@@ -43,9 +43,12 @@ public class PlayerActions : MonoBehaviour {
         }
 
         // If the escape button is pressed
-       /* if (Input.GetKeyDown(KeyCode.Escape)){
+        if (Input.GetKeyDown(KeyCode.Escape)){
+
+            Vector2 position = new Vector2(Screen.width / 2, Screen.height / 2);
+            Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
             // Create a ExitGameUI Prefab. Then Exit the game
-            quitGame = (GameObject)Instantiate(Resources.Load("ExitGameUI"));
-        }*/
+            quitGame = (GameObject)Instantiate(Resources.Load("ExitGameUI"),position, rotation);
+        }
 	}
 }
