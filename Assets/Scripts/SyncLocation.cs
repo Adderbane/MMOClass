@@ -20,6 +20,7 @@ public class SyncLocation : NetworkBehaviour {
     [SerializeField]
     private Transform camTransform;
 
+    private bool guessing;
     private Vector3 guessPos;
     private Vector3 guessVelocity;
     private float positionThreshold = 0.001f;
@@ -116,6 +117,8 @@ public class SyncLocation : NetworkBehaviour {
         }
         syncPos = latestPos;
         timeStep = 0;
+        guessPos = latestPos + guessVelocity;
+        guessing = false;
     }
     [Client]
     void OnPlayerRotSynced(float latestPlayerRot)
@@ -133,13 +136,17 @@ public class SyncLocation : NetworkBehaviour {
     {
         if (!isLocalPlayer)
         {
-            if (transform.position != guessPos)
+            if (guessing)
             {
-                transform.position = Vector3.Lerp(transform.position, guessPos, timeStep / Time.fixedDeltaTime);
+                transform.position = Vector3.Lerp(transform.position, syncPos, timeStep / Time.fixedDeltaTime);
+                if (syncPos == transform.position)
+                {
+                    guessing = true;
+                }
             }
             else
             {
-                guessPos = transform.position + guessVelocity;
+                transform.position = Vector3.Lerp(transform.position, guessPos, timeStep / Time.fixedDeltaTime);
             }
         }
         
