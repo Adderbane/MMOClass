@@ -28,6 +28,11 @@ public class SyncLocation : NetworkBehaviour {
     private float lastCamRot;
     private float rotationThreshold = 0.2f;
 
+    //Shooting
+    public GameObject bullet;
+    private Ray ray;
+    private RaycastHit hit;
+
     [SerializeField]
     private float lerpRate = 6;
 
@@ -42,6 +47,19 @@ public class SyncLocation : NetworkBehaviour {
 	void Update () {
         LerpPosition();
         LerpRotations();
+
+        if (Input.GetMouseButton(0))
+        {
+            Vector2 screenCenterPoint = new Vector2(Screen.width / 2, Screen.height / 2);
+
+            ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+
+            if (Physics.Raycast(ray, out hit, Camera.main.farClipPlane))
+            {
+                CmdShootBullet(hit.point);
+            }
+        }
+
         timeStep += Time.deltaTime;
     }
 
@@ -50,6 +68,13 @@ public class SyncLocation : NetworkBehaviour {
     {
         TransmitPosition();
         TransmitRotations();
+    }
+
+    [Command]
+    void CmdShootBullet(Vector3 pos)
+    {
+        GameObject temp = Instantiate(bullet, pos, Quaternion.identity) as GameObject;
+        NetworkServer.Spawn(temp);
     }
 
     [Command]
