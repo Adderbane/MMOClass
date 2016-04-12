@@ -9,6 +9,7 @@ public class Login : NetworkManager {
     public void StartHostGame()
     {
         // Set the network port then start hosting
+        NetworkManager.singleton.StopHost();
         SetPort();
         NetworkManager.singleton.StartHost();
     }
