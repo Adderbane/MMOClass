@@ -56,7 +56,7 @@ public class SyncLocation : NetworkBehaviour {
 
             if (Physics.Raycast(ray, out hit, Camera.main.farClipPlane))
             {
-                CmdShootBullet(hit.point);
+                //CmdShootBullet(hit.point);
             }
         }
 
