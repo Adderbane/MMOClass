@@ -11,6 +11,9 @@ public class PlayerActions : NetworkBehaviour
     private Ray ray;
     private RaycastHit hit;
 
+    private float fireRate = 2.0f;
+    private float nextFire = 0.0f;
+
     private GameObject quitGame;
 
 	// Use this for initialization
@@ -22,7 +25,7 @@ public class PlayerActions : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && Time.time > nextFire)
         {
             Debug.Log("It's shooting");
             Vector2 screenCenterPoint = new Vector2(Screen.width / 2, Screen.height / 2);
@@ -32,6 +35,7 @@ public class PlayerActions : NetworkBehaviour
             if (Physics.Raycast(ray, out hit, Camera.main.farClipPlane))
             {
                 CmdShootBullet(hit.point);
+                nextFire = Time.time + fireRate;
             }
         }
 
@@ -44,6 +48,7 @@ public class PlayerActions : NetworkBehaviour
             // Create a ExitGameUI Prefab. Then Exit the game
             quitGame = (GameObject)Instantiate(Resources.Load("ExitGameUI"),position, rotation);
         }
+
 	}
 
     [Command]
@@ -52,4 +57,5 @@ public class PlayerActions : NetworkBehaviour
         GameObject temp = Instantiate(bullet, pos, Quaternion.identity) as GameObject;
         NetworkServer.Spawn(temp);
     }
+
 }
