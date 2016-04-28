@@ -31,8 +31,6 @@ public class SyncLocation : NetworkBehaviour {
     [SerializeField]
     private float lerpRate = 6;
 
-    private float timeStep;
-
     // Use this for initialization
     void Start () {
 	    
@@ -42,8 +40,6 @@ public class SyncLocation : NetworkBehaviour {
 	void Update () {
         LerpPosition();
         LerpRotations();
-
-        timeStep += Time.deltaTime;
     }
 
     //Runs at a fixed interval
@@ -117,7 +113,6 @@ public class SyncLocation : NetworkBehaviour {
             guessPos = latestPos;
         }
         syncPos = latestPos;
-        timeStep = 0;
         guessPos = latestPos + guessVelocity;
         guessing = false;
     }
@@ -139,7 +134,7 @@ public class SyncLocation : NetworkBehaviour {
         {
             if (guessing)
             {
-                transform.position = Vector3.Lerp(transform.position, syncPos, timeStep / Time.fixedDeltaTime);
+                transform.position = Vector3.Lerp(transform.position, syncPos, lerpRate * Time.fixedDeltaTime);
                 if (syncPos == transform.position)
                 {
                     guessing = true;
@@ -147,7 +142,7 @@ public class SyncLocation : NetworkBehaviour {
             }
             else
             {
-                transform.position = Vector3.Lerp(transform.position, guessPos, timeStep / Time.fixedDeltaTime);
+                transform.position = Vector3.Lerp(transform.position, guessPos, lerpRate * Time.fixedDeltaTime);
             }
         }
         

@@ -19,7 +19,9 @@ public class Boom : MonoBehaviour {
     void OnTriggerEnter(Collider other) {
         if(other.gameObject.tag == "Player")
         {
-            other.gameObject.transform.gameObject.GetComponent<Rigidbody>().AddExplosionForce(1000, transform.position, 2.5f, 3.0f);
+            Rigidbody rb = other.gameObject.transform.parent.gameObject.GetComponent<Rigidbody>();
+            rb.isKinematic = false;
+            rb.AddExplosionForce(10000, transform.position, 2.5f, 3.0f);
         }
     }
 }
