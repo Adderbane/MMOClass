@@ -12,8 +12,6 @@ public class PlayerNetSetup : NetworkBehaviour {
 	void Start () {
         if (isLocalPlayer)
         {
-            GetComponent<CharacterController>().enabled = true;
-            GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
             cam.enabled = true;
             audioList.enabled = true;
         }
