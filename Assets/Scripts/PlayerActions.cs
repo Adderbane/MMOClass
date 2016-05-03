@@ -20,12 +20,13 @@ public class PlayerActions : NetworkBehaviour
     private int nextBullet;
 
     private GameObject quitGame;
+    private bool gameRunning;
 
     // Use this for initialization
     void Start()
     {
-        //Cursor.visible = false;
-        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         bulletPool = new GameObject[MAX_BULLETS];
         nextBullet = 0;
         for (int i = 0; i < MAX_BULLETS; i++)
@@ -34,6 +35,15 @@ public class PlayerActions : NetworkBehaviour
             NetworkServer.Spawn(bulletPool[i]);
             bulletPool[i].SetActive(false);
         }
+
+        //quit ui
+        Vector2 position = new Vector2(Screen.width / 2, Screen.height / 2);
+        Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
+        // Create a ExitGameUI Prefab. Then Exit the game
+        quitGame = (GameObject)Instantiate(Resources.Load("ExitGameUI"), position, rotation);
+        //hide it
+        gameRunning = true;
+        quitGame.SetActive(!gameRunning);
     }
 
     // Update is called once per frame
@@ -57,12 +67,21 @@ public class PlayerActions : NetworkBehaviour
         // If the escape button is pressed
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            //Cursor.lockState = CursorLockMode.None;
+            if (gameRunning)
+            {
+                gameRunning = !gameRunning;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                quitGame.SetActive(!gameRunning);
+            }
+            else
+            {
+                gameRunning = !gameRunning;
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                quitGame.SetActive(!gameRunning);
+            }
 
-            Vector2 position = new Vector2(Screen.width / 2, Screen.height / 2);
-            Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-            // Create a ExitGameUI Prefab. Then Exit the game
-            quitGame = (GameObject)Instantiate(Resources.Load("ExitGameUI"), position, rotation);
         }
 
     }
