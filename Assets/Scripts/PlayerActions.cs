@@ -49,7 +49,7 @@ public class PlayerActions : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(bulletPool.Length);
+        //Debug.Log(bulletPool.Length);
         if (Input.GetMouseButton(0) && Time.time > nextFire)
         {
             Debug.Log("It's shooting");
@@ -89,15 +89,15 @@ public class PlayerActions : NetworkBehaviour
     [Command]
     void CmdShootBullet(Vector3 pos)
     {
-        //GameObject temp = Instantiate(bullet, pos, Quaternion.identity) as GameObject;
-        //NetworkServer.Spawn(temp);
+        GameObject temp = Instantiate(bullet, pos, Quaternion.identity) as GameObject;
+        NetworkServer.Spawn(temp);
 
-        GameObject temp = bulletPool[nextBullet++];
-        if (nextBullet >= bulletPool.Length) nextBullet = 0;
-
-        temp.SetActive(true);
-        temp.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        temp.transform.position = pos;
+        //GameObject temp = bulletPool[nextBullet++];
+        //if (nextBullet >= bulletPool.Length) nextBullet = 0;
+        //
+        //temp.SetActive(true);
+        //temp.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        //temp.transform.position = pos;
     }
 
 }
