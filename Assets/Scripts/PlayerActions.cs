@@ -27,14 +27,14 @@ public class PlayerActions : NetworkBehaviour
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        bulletPool = new GameObject[MAX_BULLETS];
-        nextBullet = 0;
-        for (int i = 0; i < MAX_BULLETS; i++)
-        {
-            bulletPool[i] = Instantiate(bullet) as GameObject;
-            NetworkServer.Spawn(bulletPool[i]);
-            bulletPool[i].SetActive(false);
-        }
+        //bulletPool = new GameObject[MAX_BULLETS];
+        //nextBullet = 0;
+        //for (int i = 0; i < MAX_BULLETS; i++)
+        //{
+        //    bulletPool[i] = Instantiate(bullet) as GameObject;
+        //    NetworkServer.Spawn(bulletPool[i]);
+        //    bulletPool[i].SetActive(false);
+        //}
 
         //quit ui
         Vector2 position = new Vector2(Screen.width / 2, Screen.height / 2);
