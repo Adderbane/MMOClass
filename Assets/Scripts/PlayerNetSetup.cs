@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class PlayerNetSetup : NetworkBehaviour {
 
@@ -14,6 +15,7 @@ public class PlayerNetSetup : NetworkBehaviour {
         {
             cam.enabled = true;
             audioList.enabled = true;
+            GetComponent<UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController>().enabled = true;
         }
 
 	}
