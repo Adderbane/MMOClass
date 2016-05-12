@@ -22,6 +22,9 @@ public class PlayerNetSetup : NetworkBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
+        if (isLocalPlayer)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
 }
