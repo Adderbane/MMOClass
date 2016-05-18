@@ -47,6 +47,12 @@ public class SyncLocation : NetworkBehaviour {
     {
         TransmitPosition();
         TransmitRotations();
+
+        if (this.transform.position.y < -5)
+        {
+            Debug.Log("Respawned");
+            CmdRespawnSvr();
+        }
     }
 
     [Command]
@@ -89,6 +95,16 @@ public class SyncLocation : NetworkBehaviour {
                 CmdSendRotationsToServer(lastPlayerRot, lastCamRot);
             }
         }
+    }
+
+    [Command]
+    void CmdRespawnSvr()
+    {
+        Transform spawn = NetworkManager.singleton.GetStartPosition();
+        GameObject newPlayer = (GameObject)Instantiate(NetworkManager.singleton.playerPrefab, spawn.position, spawn.rotation);
+        NetworkServer.Destroy(this.gameObject);
+        NetworkServer.ReplacePlayerForConnection(this.connectionToClient, newPlayer, this.playerControllerId);
+
     }
 
     //Compare rotations
