@@ -40,6 +40,11 @@ public class SyncLocation : NetworkBehaviour {
 	void Update () {
         LerpPosition();
         LerpRotations();
+        if (this.transform.position.y < -5)
+        {
+            Debug.Log("Respawned");
+            CmdRespawnSvr();
+        }
     }
 
     //Runs at a fixed interval
@@ -47,12 +52,6 @@ public class SyncLocation : NetworkBehaviour {
     {
         TransmitPosition();
         TransmitRotations();
-
-        if (this.transform.position.y < -5)
-        {
-            Debug.Log("Respawned");
-            CmdRespawnSvr();
-        }
     }
 
     [Command]
