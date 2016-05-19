@@ -73,6 +73,8 @@ public class PlayerActions : NetworkBehaviour
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 quitGame.SetActive(!gameRunning);
+                NetworkManager.singleton.StopClient();
+                Application.Quit();
             }
             else
             {
